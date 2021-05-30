@@ -1,5 +1,8 @@
 {
+  "type": "flungeon:standard",
+  "name": "Flnugeon Standard",
   "min": 5,
   "max": 10,
+  "map": "flungeon:standard",
   "floors": 1
 }
