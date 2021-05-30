@@ -7,13 +7,13 @@ import xyz.nucleoid.leukocyte.util.TinyRegistry;
 import java.util.Iterator;
 
 public class ItemRegistry {
-    static TinyRegistry<ServerItem> REGISTRY = TinyRegistry.newStable();
+    public static TinyRegistry<ServerItem> REGISTRY = TinyRegistry.newStable();
 
     public static void register (String id, ServerItem item) {
+        item.init(id);
         REGISTRY.register(id, item);
     }
-    public static @NotNull Iterator<ServerItem> getItems() {
-
+    public static @NotNull Iterator<ServerItem> getItemsIterator() {
         return REGISTRY.iterator();
     }
 }

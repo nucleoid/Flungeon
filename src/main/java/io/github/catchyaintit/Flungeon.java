@@ -3,6 +3,7 @@ package io.github.catchyaintit;
 import io.github.catchyaintit.game.FlungeonConfig;
 import io.github.catchyaintit.game.FlungeonGame;
 import io.github.catchyaintit.game.item.ServerItem;
+import io.github.catchyaintit.game.item.ServerWeaponItem;
 import io.github.catchyaintit.game.item.registry.ItemRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.item.Items;
@@ -17,7 +18,7 @@ public class Flungeon implements ModInitializer {
 			FlungeonConfig.CODEC
 	);
 
-	public static ServerItem test = new ServerItem(Items.BOOK);
+	public static ServerItem test = new ServerWeaponItem(Items.BOOK, 10);
 
 	@Override
 	public void onInitialize() {

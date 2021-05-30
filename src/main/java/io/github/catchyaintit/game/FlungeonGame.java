@@ -8,6 +8,7 @@ import io.github.catchyaintit.game.map.FlungeonMapConfig;
 import io.github.catchyaintit.game.map.FlungeonMapGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -50,9 +51,12 @@ public class FlungeonGame {
 
     private TypedActionResult<ItemStack> onItemUse(ServerPlayerEntity player, Hand hand) {
         if (player.getMainHandStack().getTag().contains("custom")) {
-            ItemRegistry.getItems().forEachRemaining(serverItem -> {
-                if (player.getMainHandStack().getItem() == serverItem.getModel()) {
-                    serverItem.onUse(player, hand);
+            ItemStack itemStack = player.getMainHandStack();
+            ItemRegistry.REGISTRY.keySet().forEach(id -> {
+                CompoundTag tag = itemStack.getTag();
+                String name = tag.getString("id");
+                if (id == name) {
+                    ItemRegistry.REGISTRY.get(id).onUse(player, hand);
                 }
             });
         }
