@@ -1,6 +1,7 @@
 package io.github.catchyaintit.game.map;
 
 import xyz.nucleoid.plasmid.map.template.MapTemplate;
+import xyz.nucleoid.plasmid.map.template.MapTemplateSerializer;
 
 public class FlungeonMapGenerator {
 
@@ -8,7 +9,7 @@ public class FlungeonMapGenerator {
 
         try {
             FlungeonMap map;
-            MapTemplate template;
+            MapTemplate template = MapTemplateSerializer.INSTANCE.loadFromResource();
 
             return map;
         }catch() {
