@@ -18,7 +18,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.GameMode;
+import net.minecraft.world.dimension.DimensionType;
 import xyz.nucleoid.fantasy.BubbleWorldConfig;
 import xyz.nucleoid.plasmid.game.GameOpenContext;
 import xyz.nucleoid.plasmid.game.GameOpenProcedure;
@@ -55,7 +57,7 @@ public class FlungeonGame {
                 .setSpawnAt(map.spawn);
 
         return context.createOpenProcedure(worldConfig, logic -> {
-            FlungeonGame game = new FlungeonGame();
+            FlungeonGame game = new FlungeonGame(map);
             game.space = logic.getSpace();
             logic.setRule(GameRule.PORTALS, RuleResult.DENY);
             logic.setRule(GameRule.PVP, RuleResult.DENY);
@@ -83,6 +85,7 @@ public class FlungeonGame {
         if (!alivePlayers.contains(player.getUuid()) && !deadPlayers.contains(player.getUuid())) {
             alivePlayers.add(player.getUuid());
         }
+        player.giveItemStack(ItemRegistry.REGISTRY.get("item").getCustomModelStack());
     }
     private void onPlayerRemove(ServerPlayerEntity player) {
         if (alivePlayers.contains(player.getUuid()) || deadPlayers.contains(player.getUuid())) {

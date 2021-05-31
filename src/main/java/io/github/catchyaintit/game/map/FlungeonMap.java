@@ -2,6 +2,10 @@ package io.github.catchyaintit.game.map;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeSource;
+import net.minecraft.world.biome.source.VanillaLayeredBiomeSource;
 import xyz.nucleoid.plasmid.map.template.MapTemplate;
 import xyz.nucleoid.plasmid.map.template.TemplateChunkGenerator;
 
@@ -16,6 +20,9 @@ public class FlungeonMap {
     }
 
     public TemplateChunkGenerator asGenerator(MinecraftServer server) {
-        return new TemplateChunkGenerator(server, template);
+        long seed = server.getOverworld().getSeed();
+        BiomeSource source = new VanillaLayeredBiomeSource(seed, false, false, server.getRegistryManager().get(Registry.BIOME_KEY));
+        TemplateChunkGenerator generator = new TemplateChunkGenerator(server, template);
+        return generator;
     }
 }

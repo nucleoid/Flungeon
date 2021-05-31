@@ -22,10 +22,10 @@ public class Flungeon implements ModInitializer {
 			FlungeonGame::open,
 			FlungeonConfig.CODEC
 	);
-
+	static ServerWeaponItem killSword = new ServerWeaponItem(Items.BOOK, new ServerWeaponItemSettings().attackDamage(90000).lore(new LiteralText("kill book")));
 
 	@Override
 	public void onInitialize() {
-
+		ItemRegistry.register("item", killSword);
 	}
 }
