@@ -38,6 +38,10 @@ public class FlungeonGame {
     public LinkedList<UUID> deadPlayers = new LinkedList<>();
     public GameSpace space;
     public boolean gameStarted = false;
+    private FlungeonMap map;
+    public FlungeonGame(FlungeonMap map) {
+        this.map = map;
+    }
     public static GameOpenProcedure open(GameOpenContext<FlungeonConfig> context) {
         FlungeonConfig config = context.getConfig();
         FlungeonMapConfig mapConfig = new FlungeonMapConfig(config.map);
@@ -56,6 +60,7 @@ public class FlungeonGame {
             logic.setRule(GameRule.PORTALS, RuleResult.DENY);
             logic.setRule(GameRule.PVP, RuleResult.DENY);
             logic.setRule(GameRule.PLACE_BLOCKS, RuleResult.DENY);
+            logic.setRule(GameRule.BREAK_BLOCKS, RuleResult.DENY);
             logic.on(UseItemListener.EVENT, game::onItemUse);
             logic.on(PlayerAddListener.EVENT, game::onPlayerAdded);
             logic.on(PlayerRemoveListener.EVENT, game::onPlayerRemove);
@@ -68,6 +73,7 @@ public class FlungeonGame {
         if (alivePlayers.contains(player.getUuid()) && gameStarted) {
             alivePlayers.remove(player.getUuid());
             deadPlayers.add(player.getUuid());
+            player.teleport(map.spawn.getX(), map.spawn.getY(), map.spawn.getZ());
         }
         return ActionResult.FAIL;
     }
