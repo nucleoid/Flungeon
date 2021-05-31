@@ -13,10 +13,10 @@ import xyz.nucleoid.plasmid.util.ItemStackBuilder;
 import java.util.UUID;
 
 public class ServerWeaponItem extends ServerItem {
-    private int attackDamage;
-    public ServerWeaponItem(Item model, int damage) {
-        super(model);
-        this.attackDamage = damage;
+    private ServerWeaponItemSettings settings;
+    public ServerWeaponItem(Item model, ServerWeaponItemSettings settings) {
+        super(model, settings);
+        this.settings = settings;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ServerWeaponItem extends ServerItem {
         attackTag.putUuid("UUID", UUID.randomUUID());
         attackTag.putInt("Operation", 0);
         attackTag.putString("Name", "generic.attack_damage");
-        attackTag.putDouble("Amount", 20);
+        attackTag.putDouble("Amount", settings.getAttackDamage());
         EntityAttributeModifier modifer = EntityAttributeModifier.fromTag(attackTag);
         modelStack.addAttributeModifier(attack, modifer, EquipmentSlot.MAINHAND);
     }
