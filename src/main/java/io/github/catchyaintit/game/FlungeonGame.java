@@ -3,6 +3,7 @@ package io.github.catchyaintit.game;
 import io.github.catchyaintit.Flungeon;
 import io.github.catchyaintit.game.item.ServerItem;
 import io.github.catchyaintit.game.item.registry.ItemRegistry;
+import io.github.catchyaintit.game.map.FlungeonIntermediaryGenerator;
 import io.github.catchyaintit.game.map.FlungeonMap;
 import io.github.catchyaintit.game.map.FlungeonMapConfig;
 import io.github.catchyaintit.game.map.FlungeonMapGenerator;
@@ -53,7 +54,7 @@ public class FlungeonGame {
         FlungeonMap map = new FlungeonMapGenerator(mapConfig).generate();
 
         BubbleWorldConfig worldConfig = new BubbleWorldConfig()
-                .setGenerator(map.asGenerator(context.getServer()))
+                .setGenerator(new FlungeonIntermediaryGenerator(context.getServer()))
                 .setDefaultGameMode(GameMode.SURVIVAL)
                 .setRaining(true)
                 .setThundering(true)
