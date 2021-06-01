@@ -7,6 +7,7 @@ import io.github.catchyaintit.game.item.ServerItemSettings;
 import io.github.catchyaintit.game.item.ServerWeaponItem;
 import io.github.catchyaintit.game.item.ServerWeaponItemSettings;
 import io.github.catchyaintit.game.item.registry.ItemRegistry;
+import io.github.catchyaintit.game.map.RoomLoader;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Items;
@@ -26,6 +27,7 @@ public class Flungeon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		RoomLoader.load();
 		ItemRegistry.register("item", killSword);
 	}
 }

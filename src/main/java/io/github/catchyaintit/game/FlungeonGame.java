@@ -6,8 +6,10 @@ import io.github.catchyaintit.game.item.registry.ItemRegistry;
 import io.github.catchyaintit.game.map.FlungeonMap;
 import io.github.catchyaintit.game.map.FlungeonMapConfig;
 import io.github.catchyaintit.game.map.FlungeonMapGenerator;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -33,6 +35,7 @@ import xyz.nucleoid.plasmid.map.template.TemplateChunkGenerator;
 import javax.sound.sampled.FloatControl;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.UUID;
 
 public class FlungeonGame {
@@ -48,13 +51,14 @@ public class FlungeonGame {
         FlungeonConfig config = context.getConfig();
         FlungeonMapConfig mapConfig = new FlungeonMapConfig(config.map);
         FlungeonMap map = new FlungeonMapGenerator(mapConfig).generate();
+
         BubbleWorldConfig worldConfig = new BubbleWorldConfig()
                 .setGenerator(map.asGenerator(context.getServer()))
                 .setDefaultGameMode(GameMode.SURVIVAL)
                 .setRaining(true)
                 .setThundering(true)
                 .setTimeOfDay(18000)
-                .setSpawnAt(map.spawn);
+                .setSpawnAt(map.spawn.getCenter());
 
         return context.createOpenProcedure(worldConfig, logic -> {
             FlungeonGame game = new FlungeonGame(map);
@@ -68,14 +72,19 @@ public class FlungeonGame {
             logic.on(PlayerRemoveListener.EVENT, game::onPlayerRemove);
             logic.on(GameTickListener.EVENT, game::tick);
             logic.on(PlayerDeathListener.EVENT, game::onDeath);
+            logic.on(GameOpenListener.EVENT, game::onOpen);
         });
+    }
+
+    private void onOpen() {
+
     }
 
     private ActionResult onDeath(ServerPlayerEntity player, DamageSource source) {
         if (alivePlayers.contains(player.getUuid()) && gameStarted) {
             alivePlayers.remove(player.getUuid());
             deadPlayers.add(player.getUuid());
-            player.teleport(map.spawn.getX(), map.spawn.getY(), map.spawn.getZ());
+            player.teleport(map.spawn.getCenter().x, map.spawn.getCenter().y, map.spawn.getCenter().z);
         }
         return ActionResult.FAIL;
     }

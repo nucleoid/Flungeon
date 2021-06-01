@@ -8,6 +8,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.source.BiomeSource;
 import xyz.nucleoid.plasmid.map.template.MapTemplate;
 import xyz.nucleoid.plasmid.map.template.MapTemplateSerializer;
+import xyz.nucleoid.plasmid.util.BlockBounds;
 
 import java.io.IOException;
 
@@ -22,8 +23,9 @@ public class FlungeonMapGenerator {
 
         try {
             template = MapTemplateSerializer.INSTANCE.loadFromResource(config.id);
-            Vec3d spawn = template.getMetadata().getFirstRegion("Spawn").getBounds().getCenter();
-            map = new FlungeonMap(config, template, spawn);
+            BlockBounds spawn = template.getMetadata().getFirstRegion("Spawn").getBounds();
+            BlockBounds bounds = template.getMetadata().getFirstRegion("Floor1").getBounds();
+            map = new FlungeonMap(config, template, spawn, bounds);
             return map;
         } catch (IOException e) {
             e.printStackTrace();
